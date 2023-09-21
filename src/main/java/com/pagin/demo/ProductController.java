@@ -1,11 +1,15 @@
 package com.pagin.demo;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping(value = "/products",
+produces = {
+        MediaType.APPLICATION_XML_VALUE,
+        MediaType.APPLICATION_JSON_VALUE})
 public class ProductController {
 
     private final ProductRepository productRepository;
