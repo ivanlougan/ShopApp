@@ -1,9 +1,11 @@
 package com.pagin.demo;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/products",
@@ -29,12 +31,17 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    Product getProductById (@PathVariable Integer id) {
-        return productRepository.findById(id);
+    ResponseEntity<Product> getProductById (@PathVariable Integer id) {
+        return productRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/producer")
-    Producer getProducerByProductId (@PathVariable Integer id) {
-        return productRepository.findById(id).getProducer();
+    ResponseEntity<Producer> getProducerByProductId (@PathVariable Integer id) {
+        return productRepository.findById(id)
+                .map(Product::getProducer)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
